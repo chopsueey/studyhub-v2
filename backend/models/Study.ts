@@ -1,7 +1,8 @@
-import mongoose from 'mongoose';
-import type { ITopic } from './Topic';
+import mongoose from "mongoose";
+import type { ITopic } from "./Topic";
+import type { BaseDocument } from "backend/types/mongoose";
 
-export interface IStudy {
+export interface IStudy extends BaseDocument {
   name: string;
   topics: ITopic[];
 }
@@ -9,14 +10,14 @@ export interface IStudy {
 const StudySchema = new mongoose.Schema<IStudy>({
   name: {
     type: String,
-    required: true
+    required: true,
   },
   topics: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Topic'
-    }
-  ]
+      ref: "Topic",
+    },
+  ],
 });
 
-export const Study = mongoose.models.Study || mongoose.model<IStudy>('Study', StudySchema);
+export default mongoose.models?.Study || mongoose.model<IStudy>("Study", StudySchema);

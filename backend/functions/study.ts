@@ -1,14 +1,14 @@
-import type { HydratedDocument } from "mongoose";
-import { type IStudy, Study } from "../models/Study";
+import { type IStudy } from "../models/Study";
+import Study from "../models/Study";
 
 export async function getAllStudies() {
   try {
-    const study: HydratedDocument<IStudy>[] = await Study.find({});
+    const study: IStudy[] | null = await Study.find({}).lean<IStudy[]>(); // after chaining .lean(): study is not of type HydratedDocument anymore as it strips of the automatically added mongoose document
 
     return study;
   } catch (err) {
     console.error(err);
-    return undefined;
+    throw new Error(`Ooops...There was an error on the server: ${err}`);
   }
 }
 
@@ -16,12 +16,12 @@ export async function findStudyById(id: string) {
   try {
     const study: IStudy | null = await Study.findOne({
       _id: id,
-    }).lean<IStudy>(); // after chaining .lean(): study is not of type HydratedDocument anymore as it strips of the automatically added mongoose document
+    }).lean<IStudy>();
 
     return study;
   } catch (err) {
     console.error(err);
-    return undefined;
+    throw new Error(`Ooops...There was an error on the server: ${err}`);
   }
 }
 
@@ -31,7 +31,7 @@ export async function createStudy(formData: FormData) {
     throw new Error("Study name should be atleast 3 characters long.");
   }
   try {
-    const study: HydratedDocument<IStudy> = new Study({
+    const study: IStudy = new Study({
       name: name,
     });
 
@@ -40,7 +40,7 @@ export async function createStudy(formData: FormData) {
     return;
   } catch (err) {
     console.log(err);
-    return undefined;
+    throw new Error(`Ooops...There was an error on the server: ${err}`);
   }
 }
 
@@ -49,7 +49,7 @@ export async function deleteStudy(id: string) {
     await Study.findByIdAndDelete(id);
   } catch (err) {
     console.log(err);
-    return;
+    throw new Error(`Ooops...There was an error on the server: ${err}`);
   }
-  // TODO: call redirect("/"); in the action function 
+  // TODO: call redirect("/"); in the action function
 }

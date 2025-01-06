@@ -11,7 +11,7 @@ export async function loader() {
 }
 
 export default function Studies() {
-  const studies = useLoaderData();
+  const studies = useLoaderData<typeof loader>();
 
   if (!studies) {
     return (

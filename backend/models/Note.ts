@@ -1,3 +1,4 @@
+import type { BaseDocument } from "backend/types/mongoose";
 import mongoose from "mongoose";
 
 export interface QuillFormat {
@@ -7,11 +8,9 @@ export interface QuillFormat {
   delete?: number;
 }
 
-export interface INote {
+export interface INote extends BaseDocument {
   name: string;
   content: QuillFormat[];
-  createdAt: Date;
-  updatedAt?: Date;
 }
 
 export interface QuillEditorData {
