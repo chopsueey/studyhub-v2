@@ -1,22 +1,30 @@
-import { Link, useLoaderData } from "react-router";
+import { Link } from "react-router";
 import { createStudy, getAllStudies } from "backend/functions/study";
 import slug from "slug";
 import CreateForm from "../components/CreateForm";
 import { connectToDB } from "backend/connectDB";
+import type { Route } from "./+types/studies";
 
-export async function loader() {
-  await connectToDB();
-  const studies = await getAllStudies();
-  return studies;
+export function meta({}: Route.MetaArgs) {
+  return [
+    { title: "New React Router App" },
+    { name: "description", content: "Welcome to React Router!" },
+  ];
 }
 
-export default function Studies() {
-  const studies = useLoaderData<typeof loader>();
+export async function loader({ params }: Route.LoaderArgs) {
+  await connectToDB(process);
+  const studies = await getAllStudies();
+  return { studies };
+}
+
+export default function Studies({ loaderData }: Route.ComponentProps) {
+  const { studies } = loaderData;
 
   if (!studies) {
     return (
       <div>
-        <h1>This note does not exist anymore.</h1>
+        <h1>This Study does not exist anymore.</h1>
       </div>
     );
   }
