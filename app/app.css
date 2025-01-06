@@ -2,11 +2,69 @@
 @tailwind components;
 @tailwind utilities;
 
-html,
-body {
-  @apply bg-white dark:bg-gray-950;
+/* :root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
 
-  @media (prefers-color-scheme: dark) {
-    color-scheme: dark;
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #1d1c1c;
+    --foreground: #d6cfcf;
   }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+} */
+
+h1 {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+#confirm-dialog::backdrop {
+  backdrop-filter: blur(4px);
+}
+
+.note-body a {
+  color: blue;
+}
+
+.note-body a:hover {
+  text-decoration: underline;
+}
+
+.quiz-label {
+  transition: transform 100ms, border-color 200ms;
+}
+
+.quiz-label:hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(59 130 246 / var(--tw-border-opacity));
+}
+
+.quiz-label:has(input[type="radio"]:checked) {
+  --tw-border-opacity: 1;
+  border-color: rgb(59 130 246 / var(--tw-border-opacity));
+  transform: scale(1.02);
+}
+
+.quiz-label input[type="radio"] {
+  display: none;
+}
+
+.quiz-label span {
+  visibility: hidden;
+}
+
+.quiz-label:has(input[type="radio"]:checked) span {
+  visibility: visible;
 }
