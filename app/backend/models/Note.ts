@@ -1,4 +1,4 @@
-import type { BaseDocument } from "backend/types/mongoose";
+import type { BaseDocument } from "~/backend/types/mongoose";
 import mongoose from "mongoose";
 
 export interface QuillFormat {

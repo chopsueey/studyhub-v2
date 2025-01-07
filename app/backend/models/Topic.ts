@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import type { INote } from './Note';
-import type { BaseDocument } from 'backend/types/mongoose';
+import type { BaseDocument } from '~/backend/types/mongoose';
 
 export interface ITopic extends BaseDocument {
   name: string;

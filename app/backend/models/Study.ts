@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import type { ITopic } from "./Topic";
-import type { BaseDocument } from "backend/types/mongoose";
+import type { BaseDocument } from "~/backend/types/mongoose";
 
 export interface IStudy extends BaseDocument {
   name: string;
@@ -20,4 +20,4 @@ const StudySchema = new mongoose.Schema<IStudy>({
   ],
 });
 
-export default mongoose.models?.Study || mongoose.model<IStudy>("Study", StudySchema);
+export default mongoose.models.Study || mongoose.model<IStudy>("Study", StudySchema);

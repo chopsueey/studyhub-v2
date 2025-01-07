@@ -1,9 +1,9 @@
 import { Link } from "react-router";
-import { createStudy, getAllStudies } from "backend/functions/study";
 import slug from "slug";
-import CreateForm from "../components/CreateForm";
-import { connectToDB } from "backend/connectDB";
+// import CreateForm from "../components/CreateForm";
 import type { Route } from "./+types/studies";
+import { connectToDB } from "~/backend/connectDB";
+import { getAllStudies } from "~/backend/functions/study";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -13,7 +13,12 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export async function loader({ params }: Route.LoaderArgs) {
-  await connectToDB(process);
+  // for extra clarity use dynamic imports
+  // it seems like that even unused server-only code throws an error when creating a build
+  // const { connectToDB } = await import("~/backend/connectDB");
+  // const { getAllStudies } = await import("~/backend/functions/study");
+
+  await connectToDB();
   const studies = await getAllStudies();
   return { studies };
 }
@@ -51,7 +56,9 @@ export default function Studies({ loaderData }: Route.ComponentProps) {
           ))}
       </div>
 
-      <CreateForm action={createStudy} what="study" />
+      {/* createStudy cannot be passed to <CreateForm /> here, like it could in Next.js. */}
+      {/* <CreateForm /> should have its own action function where it is declared when build in Remix/ReactRouter. */}
+      {/* <CreateForm action={createStudy} what="study" /> */}
     </div>
   );
 }
