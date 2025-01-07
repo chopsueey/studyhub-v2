@@ -1,8 +1,8 @@
-
 import type { HydratedDocument } from "mongoose";
 import type { INote, QuillEditorData } from "../models/Note";
 import Note from "../models/Note";
-import { Topic, type ITopic} from "../models/Topic";
+import { Topic, type ITopic } from "../models/Topic";
+import { data } from "react-router";
 
 export async function getAllNotes(id: string) {
   try {
@@ -16,7 +16,13 @@ export async function getAllNotes(id: string) {
     // const note: HydratedDocument<INote>[] = await Note.find({});
   } catch (err) {
     console.error(err);
-    return undefined;
+    throw data(
+      {
+        message: "Couldn't get all notes.",
+        details: err instanceof Error ? err.message : String(err),
+      },
+      { status: 500 }
+    );
   }
 }
 
@@ -29,7 +35,13 @@ export async function findNoteById(id: string) {
     return note;
   } catch (err) {
     console.error(err);
-    return undefined;
+    throw data(
+      {
+        message: "Couldn't find specific note.",
+        details: err instanceof Error ? err.message : String(err),
+      },
+      { status: 500 }
+    );
   }
 }
 
@@ -52,7 +64,13 @@ export async function findNoteByIdSerialized(id: string) {
     return null;
   } catch (err) {
     console.error(err);
-    return undefined;
+    throw data(
+      {
+        message: "Couldn't get all notes.",
+        details: err instanceof Error ? err.message : String(err),
+      },
+      { status: 500 }
+    );
   }
 }
 
@@ -76,7 +94,13 @@ export async function postNote(
     return;
   } catch (err) {
     console.log(err);
-    return undefined;
+    throw data(
+      {
+        message: "Couldn't create the note.",
+        details: err instanceof Error ? err.message : String(err),
+      },
+      { status: 500 }
+    );
   }
 }
 
@@ -95,7 +119,13 @@ export async function patchNote(clientData: string) {
     return;
   } catch (err) {
     console.log(err);
-    return undefined;
+    throw data(
+      {
+        message: "Couldn't update the note.",
+        details: err instanceof Error ? err.message : String(err),
+      },
+      { status: 500 }
+    );
   }
 }
 
@@ -104,7 +134,13 @@ export async function deleteNote(id: string) {
     await Note.findByIdAndDelete(id);
   } catch (err) {
     console.log(err);
-    return;
+    throw data(
+      {
+        message: "Couldn't delete the note.",
+        details: err instanceof Error ? err.message : String(err),
+      },
+      { status: 500 }
+    );
   }
-  // TODO: call redirect("/"); in the action function 
+  // TODO: call redirect("/"); in the action function
 }

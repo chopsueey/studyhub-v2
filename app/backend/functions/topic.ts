@@ -1,6 +1,7 @@
 import { type HydratedDocument } from "mongoose";
 import { type ITopic, Topic } from "../models/Topic";
-import { type IStudy, Study } from "../models/Study";
+import Study, { type IStudy } from "../models/Study";
+import { data } from "react-router";
 
 export async function getAllTopics(id: string) {
   try {
@@ -14,7 +15,13 @@ export async function getAllTopics(id: string) {
     return study.topics as HydratedDocument<ITopic>[] | [];
   } catch (err) {
     console.error(err);
-    return [];
+    throw data(
+      {
+        message: "Couldn't get all topics.",
+        details: err instanceof Error ? err.message : String(err),
+      },
+      { status: 500 }
+    );
   }
 }
 
@@ -27,7 +34,13 @@ export async function findTopicById(id: string) {
     return topic;
   } catch (err) {
     console.error(err);
-    return undefined;
+    throw data(
+      {
+        message: "Couldn't find specific topic.",
+        details: err instanceof Error ? err.message : String(err),
+      },
+      { status: 500 }
+    );
   }
 }
 
@@ -48,10 +61,15 @@ export async function createTopic(
       { $push: { topics: topic._id } },
       { new: true }
     );
-
   } catch (err) {
-    console.log(err);
-    return undefined;
+    console.error(err);
+    throw data(
+      {
+        message: "Couldn't create topic.",
+        details: err instanceof Error ? err.message : String(err),
+      },
+      { status: 500 }
+    );
   }
 }
 
@@ -60,8 +78,14 @@ export async function deleteTopic(id: string) {
   try {
     await Topic.findByIdAndDelete(id);
   } catch (err) {
-    console.log(err);
-    return;
+    console.error(err);
+    throw data(
+      {
+        message: "Couldn't delete topic.",
+        details: err instanceof Error ? err.message : String(err),
+      },
+      { status: 500 }
+    );
   }
   // TODO: redirect(`/${study.name}?id=${study._id}`);
 }

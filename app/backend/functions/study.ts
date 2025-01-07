@@ -1,3 +1,4 @@
+import { data } from "react-router";
 import { type IStudy } from "../models/Study";
 import Study from "../models/Study";
 
@@ -8,7 +9,13 @@ export async function getAllStudies() {
     return study;
   } catch (err) {
     console.error(err);
-    throw new Error(`Ooops...There was an error on the server: ${err}`);
+    throw data(
+      {
+        message: "Couldn't get all studies.",
+        details: err instanceof Error ? err.message : String(err),
+      },
+      { status: 500 }
+    );
   }
 }
 
@@ -18,18 +25,34 @@ export async function findStudyById(id: string) {
       _id: id,
     }).lean<IStudy>();
 
+    if (!study) {
+      throw data({ message: "Study not found" }, { status: 404 });
+    }
+
     return study;
   } catch (err) {
     console.error(err);
-    throw new Error(`Ooops...There was an error on the server: ${err}`);
+    throw data(
+      {
+        message: "Couldn't find specific study.",
+        details: err instanceof Error ? err.message : String(err),
+      },
+      { status: 500 }
+    );
   }
 }
 
 export async function createStudy(formData: FormData) {
   const name = formData.get("name") as string;
   if (name.trim().length < 3) {
-    throw new Error("Study name should be atleast 3 characters long.");
+    throw data(
+      {
+        message: "Study name should be atleast 3 characters long.",
+      },
+      { status: 422 }
+    );
   }
+
   try {
     const study: IStudy = new Study({
       name: name,
@@ -40,16 +63,34 @@ export async function createStudy(formData: FormData) {
     return;
   } catch (err) {
     console.log(err);
-    throw new Error(`Ooops...There was an error on the server: ${err}`);
+    throw data(
+      {
+        message: "Couldn't create study.",
+        details: err instanceof Error ? err.message : String(err),
+      },
+      { status: 500 }
+    );
   }
 }
 
 export async function deleteStudy(id: string) {
   try {
-    await Study.findByIdAndDelete(id);
+    const study = await Study.findByIdAndDelete(id);
+
+    if (!study) {
+      throw data({ message: "Study not found" }, { status: 404 });
+    }
+
+    return;
   } catch (err) {
     console.log(err);
-    throw new Error(`Ooops...There was an error on the server: ${err}`);
+    throw data(
+      {
+        message: "Couldn't delete study.",
+        details: err instanceof Error ? err.message : String(err),
+      },
+      { status: 500 }
+    );
   }
   // TODO: call redirect("/"); in the action function
 }
