@@ -1,9 +1,9 @@
-import { Link } from "react-router";
+import { Link, useNavigation } from "react-router";
 import slug from "slug";
-// import CreateForm from "../components/CreateForm";
 import type { Route } from "./+types/studies";
 import { connectToDB } from "~/backend/connectDB";
 import { getAllStudies } from "~/backend/functions/study";
+import CreateForm from "~/components/CreateForm";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -13,15 +13,20 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export async function loader({ params }: Route.LoaderArgs) {
-  // for extra clarity use dynamic imports
-  // it seems like that even unused server-only imports throw an error when creating a build
+  // For extra clarity use dynamic imports;
+  // it seems like that even unused server-only imports throw an error when creating a build.
   // const { connectToDB } = await import("~/backend/connectDB");
   // const { getAllStudies } = await import("~/backend/functions/study");
 
   await connectToDB();
   const studies = await getAllStudies();
-  console.log(studies)
   return { studies };
+}
+
+export async function action({ request }: Route.ActionArgs) {
+  console.log((await request.formData()).get("name"));
+  await new Promise((resolve) => setTimeout(() => resolve(null), 3000));
+  return;
 }
 
 export default function Studies({ loaderData }: Route.ComponentProps) {
@@ -57,9 +62,10 @@ export default function Studies({ loaderData }: Route.ComponentProps) {
           ))}
       </div>
 
-      {/* createStudy cannot be passed to <CreateForm /> here, like it could in Next.js. */}
-      {/* <CreateForm /> should have its own action function where it is declared when build in Remix/ReactRouter. */}
-      {/* <CreateForm action={createStudy} what="study" /> */}
+      {/* The function createStudy (a serveraction) cannot be passed to <CreateForm /> here, like we could in Next.js. */}
+      {/* Instead, we can trigger an action function on this route via submitting the form in <CreateForm />.*/}
+      {/* And access the auto-generated request object in the action to get the FormData, which we can then pass to a function on the server. */}
+      <CreateForm what="study" />
     </main>
   );
 }
