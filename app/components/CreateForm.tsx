@@ -1,11 +1,19 @@
+import { useEffect, useRef } from "react";
 import { Form, useNavigation } from "react-router";
 
 export default function CreateForm({ what }: { what: string }) {
+  const formRef = useRef<HTMLFormElement>(null);
   const navigate = useNavigation();
-  console.log(navigate.state);
+
+  useEffect(() => {
+    if (navigate.state == "idle" && formRef.current) {
+      formRef.current.reset();
+    }
+  }, [navigate.state]);
+
   return (
     <div className="w-fit px-4 py-2 rounded-lg bg-green-500 font-semibold shadow-sm hover:bg-green-600 hover:shadow-md transition-all duration-300">
-      <Form method="post" className="space-x-2">
+      <Form ref={formRef} method="post" className="space-x-2">
         <input
           className="border rounded-lg p-1"
           name="name"

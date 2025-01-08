@@ -1,8 +1,8 @@
-import { Link, useNavigation } from "react-router";
+import { Link } from "react-router";
 import slug from "slug";
 import type { Route } from "./+types/studies";
 import { connectToDB } from "~/backend/connectDB";
-import { getAllStudies } from "~/backend/functions/study";
+import { createStudy, getAllStudies } from "~/backend/functions/study";
 import CreateForm from "~/components/CreateForm";
 
 export function meta({}: Route.MetaArgs) {
@@ -17,15 +17,13 @@ export async function loader({ params }: Route.LoaderArgs) {
   // it seems like that even unused server-only imports throw an error when creating a build.
   // const { connectToDB } = await import("~/backend/connectDB");
   // const { getAllStudies } = await import("~/backend/functions/study");
-
   await connectToDB();
   const studies = await getAllStudies();
   return { studies };
 }
 
 export async function action({ request }: Route.ActionArgs) {
-  console.log((await request.formData()).get("name"));
-  await new Promise((resolve) => setTimeout(() => resolve(null), 3000));
+  await createStudy(await request.formData());
   return;
 }
 

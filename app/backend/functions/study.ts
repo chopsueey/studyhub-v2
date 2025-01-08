@@ -57,7 +57,6 @@ export async function createStudy(formData: FormData) {
     const study: IStudy = new Study({
       name: name,
     });
-
     await study.save();
 
     return;
