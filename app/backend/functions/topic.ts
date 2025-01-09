@@ -3,16 +3,17 @@ import { type ITopic, Topic } from "../models/Topic";
 import Study, { type IStudy } from "../models/Study";
 import { data } from "react-router";
 
-export async function getAllTopics(id: string) {
+export async function getAllTopics(studySlug: string) {
   try {
-    const study: IStudy | null = await Study.findById(id).populate("topics");
+    const study: IStudy | null = await Study.findOne({
+      name: studySlug,
+    }).populate("topics").lean<IStudy>(); // always chain .lean(), if not it can lead to unexpected bugs
 
     if (study == null) {
-      throw new Error("Nothing found.");
+      return null;
     }
-    // const topic: HydratedDocument<ITopic>[] = await Topic.find({});
 
-    return study.topics as HydratedDocument<ITopic>[] | [];
+    return study.topics as ITopic[];
   } catch (err) {
     console.error(err);
     throw data(

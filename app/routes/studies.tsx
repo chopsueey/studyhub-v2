@@ -29,7 +29,6 @@ export async function action({ request }: Route.ActionArgs) {
 
 export default function Studies({ loaderData }: Route.ComponentProps) {
   const { studies } = loaderData;
-
   if (!studies) {
     return (
       <div>
@@ -45,16 +44,15 @@ export default function Studies({ loaderData }: Route.ComponentProps) {
 
       <div className="flex space-x-2">
         {studies.length > 0 &&
-          studies.map((subject) => (
+          studies.map((study) => (
             <Link
-              key={Math.random().toFixed(4)}
+              key={String(study.id)}
               to={{
-                pathname: `/${slug(subject.name)}`,
-                search: `?id=${subject.id}`,
+                pathname: `/studies/${slug(study.name)}`,
               }}
             >
               <div className="border w-fit p-2 rounded-lg hover:bg-slate-300">
-                <p>{subject.name}</p>
+                <p>{study.name}</p>
               </div>
             </Link>
           ))}

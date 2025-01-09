@@ -1,10 +1,11 @@
 import { data } from "react-router";
 import { type IStudy } from "../models/Study";
 import Study from "../models/Study";
+import slug from "slug";
 
 export async function getAllStudies() {
   try {
-    const study: IStudy[] | null = await Study.find({}).lean<IStudy[]>(); // after chaining .lean(): study is not of type HydratedDocument anymore as it strips of the automatically added mongoose document
+    const study = await Study.find({}).lean<IStudy[]>(); // after chaining .lean(): study is not of type HydratedDocument anymore as it strips of the automatically added mongoose document
 
     return study;
   } catch (err) {
@@ -55,7 +56,7 @@ export async function createStudy(formData: FormData) {
 
   try {
     const study: IStudy = new Study({
-      name: name,
+      name: slug(name),
     });
     await study.save();
 
