@@ -24,5 +24,4 @@ const TopicSchema = new mongoose.Schema<ITopic>({
   ],
 });
 
-export const Topic =
-  mongoose.models.Topic || mongoose.model<ITopic>("Topic", TopicSchema);
+export default mongoose.models.Topic || mongoose.model<ITopic>("Topic", TopicSchema);

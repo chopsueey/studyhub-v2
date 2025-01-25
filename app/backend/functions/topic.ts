@@ -1,8 +1,7 @@
 import { type HydratedDocument } from "mongoose";
-import { type ITopic, Topic } from "../models/Topic";
+import Topic, { type ITopic } from "../models/Topic";
 import Study, { type IStudy } from "../models/Study";
 import { data } from "react-router";
-import slug from "slug";
 
 export async function getAllTopics(studySlug: string) {
   try {
@@ -15,10 +14,12 @@ export async function getAllTopics(studySlug: string) {
     if (study == null) {
       return null;
     }
+
     const topics = study.topics.map((topic) => ({
       ...topic,
       _id: topic._id.toString(),
     }));
+
     return topics;
   } catch (err) {
     console.error(err);
@@ -62,11 +63,18 @@ export async function findTopicBySlug(topicSlug: string) {
   try {
     const topic: ITopic | null = await Topic.findOne({
       slug: topicSlug,
-    }).lean<ITopic>(); // after chaining .lean(): topic is not of type HydratedDocument anymore as it strips of the automatically added mongoose document
+    })
+      .lean<ITopic>() // after chaining .lean(): topic is not of type HydratedDocument anymore as it strips of the automatically added mongoose document
+      .populate("notes");
 
     if (!topic) {
       throw data({ message: "Topic not found" }, { status: 404 });
     }
+
+    topic.notes = topic.notes.map((note) => ({
+      ...note,
+      _id: note._id.toString(),
+    }));
 
     return topic;
   } catch (err) {
