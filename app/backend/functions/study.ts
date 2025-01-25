@@ -5,9 +5,12 @@ import slug from "slug";
 
 export async function getAllStudies() {
   try {
-    const study = await Study.find({}).lean<IStudy[]>(); // after chaining .lean(): study is not of type HydratedDocument anymore as it strips of the automatically added mongoose document
-
-    return study;
+    const studies = await Study.find({}).lean<IStudy[]>(); // after chaining .lean(): study is not of type HydratedDocument anymore as it strips of the automatically added mongoose document
+    const studyIDsToString = studies.map((study) => ({ // The ObjectIDs have to be converted to string on the server, as we can't convert them in a react client component.
+      ...study,
+      _id: study._id.toString(),
+    }));
+    return studyIDsToString;
   } catch (err) {
     console.error(err);
     throw data(

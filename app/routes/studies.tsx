@@ -46,7 +46,7 @@ export default function Studies({ loaderData }: Route.ComponentProps) {
         {studies.length > 0 &&
           studies.map((study) => (
             <Link
-              key={String(study.id)}
+              key={study._id}
               to={{
                 pathname: `/studies/${slug(study.name)}`,
               }}
