@@ -1,23 +1,28 @@
-import mongoose from 'mongoose';
-import type { INote } from './Note';
-import type { BaseDocument } from '~/backend/types/mongoose';
+import mongoose from "mongoose";
+import type { INote } from "./Note";
+import type { BaseDocument } from "~/backend/types/mongoose";
 
 export interface ITopic extends BaseDocument {
   name: string;
+  slug: string;
   notes: INote[];
 }
 
 const TopicSchema = new mongoose.Schema<ITopic>({
   name: {
     type: String,
-    required: true
+    required: true,
+  },
+  slug: {
+    type: String,
   },
   notes: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Note'
-    }
-  ]
+      ref: "Note",
+    },
+  ],
 });
 
-export const Topic = mongoose.models.Topic || mongoose.model<ITopic>('Topic', TopicSchema);
+export const Topic =
+  mongoose.models.Topic || mongoose.model<ITopic>("Topic", TopicSchema);

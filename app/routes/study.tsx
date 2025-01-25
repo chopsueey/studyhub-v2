@@ -39,9 +39,9 @@ export default function Study({ loaderData }: Route.ComponentProps) {
         {topics.length > 0 &&
           topics.map((topic) => (
             <Link
-              key={Math.random().toFixed(4)}
+              key={topic._id}
               to={{
-                pathname: `/${studySlug}/${slug(topic.name)}`,
+                pathname: `/studies/${studySlug}/topic/${slug(topic.name)}`,
               }}
             >
               <div className="border w-fit p-2 rounded-lg hover:bg-slate-300">
