@@ -1,75 +1,62 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ReactMarkDown from "react-markdown";
 import Quiz from "./Quiz";
+import { useFetcher } from "react-router";
 
-export default function AIResponseButton({
-  noteId,
-  option,
-}: {
-  noteId: string;
-  option: number;
-}) {
-  const [normalResponse, setResponse] = useState("");
-  const [quizResponse, setQuizResponse] = useState<QuizQuestions | null>(null);
+export default function AIResponseButton({ option }: { option: number }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const fetcher = useFetcher();
 
   const options = ["Summary", "Terms and keywords", "Quiz", "Advanced Quiz"];
 
-  const handleGenerateResponse = async () => {
-    setLoading(true);
-    const res = await fetch("/api/generateAIResponse", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ noteId, option }),
-    });
-
-    const data = await res.json();
-
-    if (data.asText) {
-      if (option == 2 || option == 3) {
-        setQuizResponse(JSON.parse(data.asText));
-      } else {
-        setResponse(data.asText || "No normalResponse from AI");
-      }
-
+  useEffect(() => {
+    if (fetcher.state == "idle" && fetcher.data) {
       setIsOpen(true);
     }
-    setLoading(false);
-  };
+  }, [fetcher.state, fetcher.data]);
 
   if (option == 2 || option == 3) {
     return (
-      <div className="space-y-2 rounded-lg p-2 flex flex-col justify-center">
+      <div className="space-y-2 rounded-lg p-2 flex justify-center">
         {isOpen && (
           <>
-            {quizResponse && <Quiz quiz={quizResponse} />}
-            <button
-              className="w-fit px-4 py-2 ml-auto mt-4 rounded-lg bg-green-500 text-white font-semibold shadow-sm hover:bg-green-600 hover:shadow-md transition-all duration-300"
-              onClick={handleGenerateResponse}
-              disabled={loading}
-            >
-              {loading ? "Loading..." : isOpen ? "Create again" : `Create`}
-            </button>
+            {fetcher.data && <Quiz quiz={JSON.parse(fetcher.data)} />}
+            <fetcher.Form method="POST">
+              <input type="hidden" name="option" value={option} />
+              <button
+                className="w-fit px-4 py-2 ml-auto mt-4 rounded-lg bg-green-500 text-white font-semibold shadow-sm hover:bg-green-600 hover:shadow-md transition-all duration-300"
+                type="submit"
+                disabled={fetcher.state == "submitting"}
+              >
+                {fetcher.state == "submitting"
+                  ? "Loading..."
+                  : isOpen
+                  ? "Create again"
+                  : `Create`}
+              </button>
+            </fetcher.Form>
           </>
         )}
         {!isOpen && (
-          <button
-            className="w-fit px-4 py-2 mx-auto rounded-lg bg-green-500 text-white font-semibold shadow-sm hover:bg-green-600 hover:shadow-md transition-all duration-300"
-            onClick={handleGenerateResponse}
-            disabled={loading}
-          >
-            {loading ? "Loading..." : `Create ${options[option]}`}
-          </button>
+          <fetcher.Form method="POST">
+            <input type="hidden" name="option" value={option} />
+            <button
+              className="w-fit px-4 py-2 mx-auto rounded-lg bg-green-500 text-white font-semibold shadow-sm hover:bg-green-600 hover:shadow-md transition-all duration-300"
+              type="submit"
+              disabled={fetcher.state == "submitting"}
+            >
+              {fetcher.state == "submitting"
+                ? "Loading..."
+                : `Create ${options[option]}`}
+            </button>
+          </fetcher.Form>
         )}
       </div>
     );
   }
 
   return (
-    <div className="space-y-2 rounded-lg p-2 flex flex-col justify-center">
+    <div className="space-y-2 rounded-lg p-2 flex justify-center">
       {isOpen && (
         <details
           open={isOpen}
@@ -82,38 +69,38 @@ export default function AIResponseButton({
             </span>
           </summary>
           <div className="flex flex-col p-4 text-gray-600 bg-gray-50 rounded-b-lg overflow-y-scroll max-h-[50vh]">
-            {normalResponse && <ReactMarkDown>{normalResponse}</ReactMarkDown>}
-            <button
-              className="w-fit px-4 py-2 ml-auto mt-4 rounded-lg bg-green-500 text-white font-semibold shadow-sm hover:bg-green-600 hover:shadow-md transition-all duration-300"
-              onClick={handleGenerateResponse}
-              disabled={loading}
-            >
-              {loading ? "Loading..." : isOpen ? "Create again" : `Create`}
-            </button>
+            {fetcher.data && <ReactMarkDown>{fetcher.data}</ReactMarkDown>}
+            <fetcher.Form method="POST">
+              <input type="hidden" name="option" value={option} />
+              <button
+                className="w-fit px-4 py-2 ml-auto mt-4 rounded-lg bg-green-500 text-white font-semibold shadow-sm hover:bg-green-600 hover:shadow-md transition-all duration-300"
+                type="submit"
+                disabled={fetcher.state == "submitting"}
+              >
+                {fetcher.state == "submitting"
+                  ? "Loading..."
+                  : isOpen
+                  ? "Create again"
+                  : `Create`}
+              </button>
+            </fetcher.Form>
           </div>
         </details>
       )}
       {!isOpen && (
-        <button
-          className="w-fit px-4 py-2 mx-auto rounded-lg bg-green-500 text-white font-semibold shadow-sm hover:bg-green-600 hover:shadow-md transition-all duration-300"
-          onClick={handleGenerateResponse}
-          disabled={loading}
-        >
-          {loading ? "Loading..." : `Create ${options[option]}`}
-        </button>
+        <fetcher.Form method="POST">
+          <input type="hidden" name="option" value={option} />
+          <button
+            className="w-fit px-4 py-2 mx-auto rounded-lg bg-green-500 text-white font-semibold shadow-sm hover:bg-green-600 hover:shadow-md transition-all duration-300"
+            type="submit"
+            disabled={fetcher.state == "submitting"}
+          >
+            {fetcher.state == "submitting"
+              ? "Loading..."
+              : `Create ${options[option]}`}
+          </button>
+        </fetcher.Form>
       )}
     </div>
   );
-}
-
-export interface QuizQuestions {
-  quizTitle: string;
-  questions: Question[];
-}
-
-export interface Question {
-  question: string;
-  options: string[];
-  answerText: string;
-  answer: string;
 }

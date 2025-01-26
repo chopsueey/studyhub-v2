@@ -1,6 +1,17 @@
 import { useEffect, useRef, useState } from "react";
 import { Check } from "lucide-react";
-import type { QuizQuestions } from "./AIResponseButton";
+
+export interface QuizQuestions {
+  quizTitle: string;
+  questions: Question[];
+}
+
+export interface Question {
+  question: string;
+  options: string[];
+  answerText: string;
+  answer: string;
+}
 
 export default function Quiz(quiz: { quiz: QuizQuestions }) {
   const { quizTitle, questions } = quiz.quiz;

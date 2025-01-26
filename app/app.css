@@ -35,7 +35,8 @@ h2 {
 }
 
 .note-body a {
-  color: blue;
+  --tw-text-opacity: 1;
+  color: rgb(59 130 246 / var(--tw-text-opacity, 1)) /* #3b82f6 */;
 }
 
 .note-body a:hover {

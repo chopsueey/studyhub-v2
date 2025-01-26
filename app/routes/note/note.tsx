@@ -4,19 +4,29 @@ import Sidebar from "./Sidebar";
 import NoteContent from "./NoteContent";
 import { findNoteBySlug } from "~/backend/functions/note";
 import type { Route } from "./+types/note";
+import { promptAI } from "~/backend/functions/promptAI";
 
 export async function loader({ params }: Route.LoaderArgs) {
   const note = await findNoteBySlug(params.noteSlug);
   return { note };
 }
 
-export default function Note({ loaderData }: Route.ComponentProps) {
+export async function action({ request, params }: Route.ActionArgs) {
+  const note = await findNoteBySlug(params.noteSlug); // Is there a way to access the already loaded data from the loader function here? Instead of making another query?
+  const noteContent = note.content;
+  const formData = await request.formData();
+  const option: number = Number(formData.get("option"));
+  const response = await promptAI(option, noteContent);
+  return response;
+}
+
+export default function Note({ loaderData, actionData }: Route.ComponentProps) {
   const { studySlug, topicSlug, noteSlug } = useParams();
   const { note } = loaderData;
 
   return (
     <div className="max-w-screen-md mx-auto p-8 border rounded-lg flex flex-col relative">
-      {/* <Sidebar noteId={noteId} /> */}
+      <Sidebar />
       <div>
         <div className="flex flex-col justify-between border-b space-y-4">
           <div className="flex justify-between items-center">
