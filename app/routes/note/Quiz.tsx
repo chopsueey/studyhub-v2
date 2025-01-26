@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import { Check } from "lucide-react";
 
 export interface QuizQuestions {
   quizTitle: string;
@@ -30,6 +29,7 @@ export default function Quiz(quiz: { quiz: QuizQuestions }) {
         e.clientY < dialogDimensions.top ||
         e.clientY > dialogDimensions.bottom
       ) {
+        document.body.setAttribute("style", "overflow:auto");
         dialog.close();
       }
     }
@@ -51,7 +51,10 @@ export default function Quiz(quiz: { quiz: QuizQuestions }) {
     <>
       <button
         type="button"
-        onClick={() => dialogRef.current?.showModal()}
+        onClick={() => {
+          dialogRef.current?.showModal();
+          document.body.setAttribute("style", "overflow:hidden");
+        }}
         className="w-fit p-2 mx-auto rounded-lg text-green-500 bg-white hover:bg-green-500 hover:text-white border hover:border-green-500 shadow-sm hover:shadow-md transition-all duration-300"
       >
         Start Quiz
@@ -72,18 +75,19 @@ export default function Quiz(quiz: { quiz: QuizQuestions }) {
               {questions[questionNumber].options.map((option) => {
                 return (
                   <label
-                    className="border-2 p-3 quiz-label rounded-lg cursor-pointer flex justify-between items-center"
+                    className="border-2 p-3 quiz-label rounded-lg cursor-pointer flex items-center"
                     key={Math.random()}
                   >
                     <input
+                      className="mr-2 cursor-pointer"
                       type="radio"
                       name={questions[questionNumber].question}
                       value={questions[questionNumber].answerText}
                     />
                     {` ${option}`}
-                    <span className="text-blue-500">
+                    {/* <span className="text-blue-500">
                       <Check />
-                    </span>
+                    </span> */}
                   </label>
                 );
               })}
@@ -91,7 +95,9 @@ export default function Quiz(quiz: { quiz: QuizQuestions }) {
             <details ref={detailsRef} className="cursor-pointer">
               <summary>Answer</summary>
               {/* TODO: Add a "Why" button, making a prompt to AI, asking to explain the answer in more detail (based on the actual note) */}
-              <p>{questions[questionNumber].answerText}</p>
+              <p className="cursor-auto">
+                {questions[questionNumber].answerText}
+              </p>
             </details>
           </div>
         </div>

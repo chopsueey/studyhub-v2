@@ -40,56 +40,41 @@ export default function NoteContent({ note }: { note: QuillFormat[] }) {
     return plainText;
   }
 
+  const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setFormat(event.target.value);
+  };
+
   return (
     <>
-      <div className="flex justify-between items-center p-2 border-b">
-        <p>Format:</p>
-        <div className="space-x-2">
-          <button
-            type="button"
-            onClick={() => setFormat("quill-to-html")}
-            className={`w-fit p-2 border rounded-lg hover:border-gray-400 transition-all duration-300 ${
-              format == "quill-to-html" ? "border-gray-400 shadow-md" : ""
-            }`}
-          >
-            Quill-to-HTML
-          </button>
-          <button
-            type="button"
-            onClick={() => setFormat("md")}
-            className={`w-fit p-2 border rounded-lg hover:border-gray-400 transition-all duration-300 ${
-              format == "md" ? "border-gray-400 shadow-md" : ""
-            }`}
-          >
-            md
-          </button>
-          <button
-            type="button"
-            onClick={() => setFormat("raw")}
-            className={`w-fit p-2 border rounded-lg hover:border-gray-400 transition-all duration-300 ${
-              format == "raw" ? "border-gray-400 shadow-md" : ""
-            }`}
-          >
-            raw
-          </button>
-        </div>
+      <div className="flex justify-end pt-2">
+        <select
+          name="format-selector"
+          id="format-selector"
+          value={format}
+          onChange={handleSelectChange}
+          className="w-fit p-1 border rounded-lg hover:border-gray-400 transition-all duration-300 cursor-pointer"
+        >
+          <option value="quill-to-html">Quill-to-HTML</option>
+          <option value="markdown">Markdown</option>
+          <option value="raw">Raw</option>
+        </select>
       </div>
 
       {format == "quill-to-html" && (
         <div
-          className={"note-body p-8 break-words"}
+          className="note-body py-2 break-words"
           dangerouslySetInnerHTML={{ __html: html }}
         ></div>
       )}
 
-      {format == "md" && (
-        <div className={"note-body p-8 break-words"}>
+      {format == "markdown" && (
+        <div className="note-body py-2 break-words">
           <ReactMarkDown>{deltaToPlainText(note)}</ReactMarkDown>
         </div>
       )}
 
       {format == "raw" && (
-        <div className={"note-body p-8 break-words"}>
+        <div className="note-body py-2 break-words">
           {deltaToPlainText(note)}
         </div>
       )}

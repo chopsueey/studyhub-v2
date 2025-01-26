@@ -44,7 +44,7 @@ h2 {
 }
 
 .quiz-label {
-  transition: transform 100ms, border-color 200ms;
+  transition: border-color 200ms;
 }
 
 .quiz-label:hover {
@@ -55,17 +55,4 @@ h2 {
 .quiz-label:has(input[type="radio"]:checked) {
   --tw-border-opacity: 1;
   border-color: rgb(59 130 246 / var(--tw-border-opacity));
-  transform: scale(1.02);
-}
-
-.quiz-label input[type="radio"] {
-  display: none;
-}
-
-.quiz-label span {
-  visibility: hidden;
-}
-
-.quiz-label:has(input[type="radio"]:checked) span {
-  visibility: visible;
 }

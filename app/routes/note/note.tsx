@@ -25,53 +25,54 @@ export default function Note({ loaderData, actionData }: Route.ComponentProps) {
   const { note } = loaderData;
 
   return (
-    <div className="max-w-screen-md mx-auto p-8 border rounded-lg flex flex-col relative">
+    <main className="max-w-screen-md mx-auto p-8 border rounded-lg flex flex-col relative">
       <Sidebar />
       <div>
-        <div className="flex flex-col justify-between border-b space-y-4">
+        <div className="flex flex-col border-b space-y-4">
           <div className="flex justify-between items-center">
-            <h1 className="text-5xl break-all">{note.name}</h1>
+            <h1 className="text-4xl">{note.name}</h1>
+          </div>
+          <div className="pb-4 flex justify-between items-center space-x-4">
+            <div className="flex">
+              <p className="text-xs bg-slate-200 rounded-full py-1 px-3 w-fit">
+                {note.createdAt.toLocaleString("en-US", {
+                  weekday: "long",
+                  month: "short",
+                  day: "numeric",
+                  year: "numeric",
+                  hour: "numeric",
+                  minute: "2-digit",
+                  hour12: true,
+                })}
+              </p>
+              <p className="text-xs rounded-full py-1 px-3 w-fit">
+                {note.updatedAt &&
+                  "Edited: " +
+                    note.updatedAt?.toLocaleString("en-US", {
+                      weekday: "long",
+                      month: "short",
+                      day: "numeric",
+                      year: "numeric",
+                      hour: "numeric",
+                      minute: "2-digit",
+                      hour12: true,
+                    })}
+              </p>
+            </div>
             <Link
-              className="w-fit h-fit p-2 rounded-lg border hover:border-blue-600 inline-block shadow-sm hover:shadow-md transition-all duration-300"
+              className="w-fit h-fit p-1 rounded-lg border hover:border-blue-500 inline-block shadow-sm hover:shadow-md transition-all duration-300"
               to={{
                 pathname: `/studies/${studySlug}/topic/${topicSlug}/${noteSlug}/edit-note`,
               }}
             >
-              <Pencil className="text-blue-600" />
+              <Pencil className="text-blue-500" />
             </Link>
           </div>
-          <div className="mr-auto pb-4 flex space-x-2">
-            <p className="text-xs bg-slate-200 rounded-full py-1 px-3 w-fit mt-auto ml-auto">
-              {note.createdAt.toLocaleString("en-US", {
-                weekday: "long",
-                month: "short",
-                day: "numeric",
-                year: "numeric",
-                hour: "numeric",
-                minute: "2-digit",
-                hour12: true,
-              })}
-            </p>
-            <p className="text-xs rounded-full py-1 px-3 w-fit mt-2 ml-auto">
-              {note.updatedAt &&
-                "Edited: " +
-                  note.updatedAt?.toLocaleString("en-US", {
-                    weekday: "long",
-                    month: "short",
-                    day: "numeric",
-                    year: "numeric",
-                    hour: "numeric",
-                    minute: "2-digit",
-                    hour12: true,
-                  })}
-            </p>
-          </div>
         </div>
-
         <NoteContent note={note.content} />
       </div>
 
       {/* <Dialog action="delete" id={noteId} note={note.name} /> */}
-    </div>
+    </main>
   );
 }
