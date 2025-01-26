@@ -1,7 +1,6 @@
 import type { Route } from "./+types/topic";
 import { findTopicBySlug } from "~/backend/functions/topic";
 import { data, Link, useParams } from "react-router";
-import { Suspense } from "react";
 import type { INote } from "~/backend/models/Note";
 import slug from "slug";
 
@@ -26,18 +25,16 @@ export default function Topic({ loaderData }: Route.ComponentProps) {
         {/* <Dialog action="delete" id={topic._id} topic={topic} /> */}
       </div>
       <div className="flex space-y-2 space-y-reverse flex-wrap py-8 border-y">
-        <Suspense fallback={<div>Loading...</div>}>
-          {studySlug && topic.notes.length > 0
-            ? topic.notes.map((note) => (
-                <Note
-                  key={note._id}
-                  studySlug={studySlug}
-                  topicSlug={topic.slug}
-                  note={note}
-                />
-              ))
-            : null}
-        </Suspense>
+        {studySlug && topic.notes.length > 0
+          ? topic.notes.map((note) => (
+              <NoteLink
+                key={note._id}
+                studySlug={studySlug}
+                topicSlug={topic.slug}
+                note={note}
+              />
+            ))
+          : null}
       </div>
 
       <Link
@@ -52,7 +49,7 @@ export default function Topic({ loaderData }: Route.ComponentProps) {
   );
 }
 
-export function Note({
+export function NoteLink({
   studySlug,
   topicSlug,
   note,

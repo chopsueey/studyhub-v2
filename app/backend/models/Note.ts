@@ -10,6 +10,7 @@ export interface QuillFormat {
 
 export interface INote extends BaseDocument {
   name: string;
+  slug: string;
   content: QuillFormat[];
 }
 
@@ -30,6 +31,7 @@ const DeltaJSONSchema = new mongoose.Schema<QuillFormat>(
 const ContentSchema = new mongoose.Schema<INote>(
   {
     name: { type: String, required: true },
+    slug: { type: String, required: true },
     content: {
       type: [DeltaJSONSchema],
       required: true,

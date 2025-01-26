@@ -5,4 +5,5 @@ export default [
   route("studies", "./routes/studies.tsx"),
   route("studies/:studySlug", "./routes/study.tsx"),
   route("studies/:studySlug/topic/:topicSlug", "./routes/topic.tsx"),
+  route("studies/:studySlug/topic/:topicSlug/:noteSlug", "./routes/note/note.tsx"),
 ] satisfies RouteConfig;

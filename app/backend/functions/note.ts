@@ -1,7 +1,7 @@
 import type { HydratedDocument } from "mongoose";
 import type { INote, QuillEditorData } from "../models/Note";
 import Note from "../models/Note";
-import { Topic, type ITopic } from "../models/Topic";
+import Topic, { type ITopic } from "../models/Topic";
 import { data } from "react-router";
 
 export async function getAllNotes(id: string) {
@@ -19,6 +19,29 @@ export async function getAllNotes(id: string) {
     throw data(
       {
         message: "Couldn't get all notes.",
+        details: err instanceof Error ? err.message : String(err),
+      },
+      { status: 500 }
+    );
+  }
+}
+
+export async function findNoteBySlug(noteSlug: string) {
+  try {
+    const note: INote | null = await Note.findOne({
+      slug: noteSlug,
+    }).lean<INote>(); // after chaining .lean(): note is not of type HydratedDocument anymore as it strips of the automatically added mongoose document
+
+    if (!note)
+    {
+      throw data({ message: "Note not found" }, { status: 404 });
+    }
+    return note;
+  } catch (err) {
+    console.error(err);
+    throw data(
+      {
+        message: "Couldn't find specific note.",
         details: err instanceof Error ? err.message : String(err),
       },
       { status: 500 }

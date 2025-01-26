@@ -1,7 +1,9 @@
 import { type HydratedDocument } from "mongoose";
 import Topic, { type ITopic } from "../models/Topic";
 import Study, { type IStudy } from "../models/Study";
+import Note from "../models/Note";
 import { data } from "react-router";
+import slug from "slug";
 
 export async function getAllTopics(studySlug: string) {
   try {
@@ -36,7 +38,7 @@ export async function getAllTopics(studySlug: string) {
 // template for updating many documents
 // export async function addSlugField() {
 //   try {
-//     const topics = await Topic.find({});
+//     const topics = await Note.find({});
 
 //     const bulkOps = topics.map((topic) => {
 //       const slugged = slug(topic.name, {lower: true});
@@ -49,7 +51,7 @@ export async function getAllTopics(studySlug: string) {
 //     });
 
 //     if (bulkOps.length > 0) {
-//       const result = await Topic.bulkWrite(bulkOps);
+//       const result = await Note.bulkWrite(bulkOps);
 //       console.log(`Updated ${result.modifiedCount} documents with slug fields.`);
 //     } else {
 //       console.log("No documents found to update.");
