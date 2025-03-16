@@ -20,7 +20,7 @@ export async function action({ request, params }: Route.ActionArgs) {
   return response;
 }
 
-export default function Note({ loaderData, actionData }: Route.ComponentProps) {
+export default function Note({ loaderData }: Route.ComponentProps) {
   const { studySlug, topicSlug, noteSlug } = useParams();
   const { note } = loaderData;
 

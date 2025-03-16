@@ -128,18 +128,17 @@ export async function postNote(
 }
 
 export async function patchNote(clientData: string) {
-  const requestBody: QuillEditorData & { id: string } = await JSON.parse(
+  const requestBody: QuillEditorData & { _id: string } = await JSON.parse(
     clientData
   );
-
   try {
-    await Note.findByIdAndUpdate(
-      requestBody.id,
+    const updatedNote = await Note.findByIdAndUpdate(
+      requestBody._id,
       { content: requestBody.ops },
       { new: true }
     );
 
-    return;
+    return updatedNote;
   } catch (err) {
     console.log(err);
     throw data(

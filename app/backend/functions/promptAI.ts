@@ -2,7 +2,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import type { QuillFormat } from "../models/Note";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
-const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" });
+const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
 export async function promptAI(option: number, noteContent: QuillFormat[]) {
   const content = noteContent.map((item: QuillFormat) => item.insert).join("");
@@ -16,22 +16,22 @@ export async function promptAI(option: number, noteContent: QuillFormat[]) {
 
   const prompt = `${prompts[option]} \n\n" ${content} " ${
     option == 2 || option == 3
-      ? `The quiz should be in a suitable JSON format, like this: "{
-                "quizTitle": "A Quiz about Giraffes",
-                "questions": [
-                     {
-                      "question": "Where do Giraffes live?",
-                      "options": [
-      "A: The Moon",
-      "B: Africa",
-      "C: The Northpole",
-      "D: East-Asia"
-    ],
-    "answerText": "B: Africa",
-    "answer": "B",
-  }
-    ]
-    }`
+      ? `{
+  "quizTitle": "A Quiz about Giraffes",
+  "questions": [
+    {
+      "question": "Where do Giraffes live?",
+      "options": [
+        "A: The Moon",
+        "B: Africa",
+        "C: The Northpole",
+        "D: East-Asia"
+      ],
+      "answerText": "B: Africa",
+      "answer": "B"
+    }
+  ]
+}`
       : ""
   }`;
 
