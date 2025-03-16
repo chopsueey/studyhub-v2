@@ -1,7 +1,6 @@
 import { findNoteBySlug, patchNote } from "~/backend/functions/note";
 import type { Route } from "./+types/edit-note";
 import QuillEditor from "~/components/QuillEditor";
-import { findTopicBySlug } from "~/backend/functions/topic";
 import { redirect } from "react-router";
 
 export async function loader({ params }: Route.LoaderArgs) {
