@@ -16,7 +16,7 @@ export async function promptAI(option: number, noteContent: QuillFormat[]) {
 
   const prompt = `${prompts[option]} \n\n" ${content} " ${
     option == 2 || option == 3
-      ? `{
+      ? `The quiz should be in a suitable JSON format, like this: "{
   "quizTitle": "A Quiz about Giraffes",
   "questions": [
     {
@@ -31,7 +31,7 @@ export async function promptAI(option: number, noteContent: QuillFormat[]) {
       "answer": "B"
     }
   ]
-}`
+}"`
       : ""
   }`;
 
