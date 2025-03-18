@@ -10,6 +10,7 @@ import {
 
 import type { Route } from "./+types/root";
 import stylesheet from "./app.css?url";
+import Breadcrumb from "./components/Breadcrumb";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -35,13 +36,19 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        <header className="min-h-[2.5vh] max-w-screen-sm mx-auto px-3 py-1 mb-8 border border-t-0 rounded-lg rounded-t-none">
-          <NavLink className="hover:underline text-blue-500" to={"/"}>
-            Home
-          </NavLink>{" "}
-          <NavLink className="hover:underline text-blue-500" to={"/studies"}>
-            Studies
+        <header className="min-h-[2.5vh] max-w-screen-lg mx-auto px-3 py-1 mb-8 border border-t-0 rounded-lg rounded-t-none">
+          <NavLink className={"text-4xl"} to={"/"}>
+            Studyhub
           </NavLink>
+          <Breadcrumb />
+          {/* <div>
+            <NavLink className="hover:underline text-blue-500" to={"/"}>
+              Home
+            </NavLink>{" "}
+            <NavLink className="hover:underline text-blue-500" to={"/studies"}>
+              Studies
+            </NavLink>
+          </div> */}
         </header>
         {children}
         <ScrollRestoration />
