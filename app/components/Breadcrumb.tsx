@@ -1,4 +1,6 @@
 import { Link, useLocation } from "react-router";
+import { twMerge } from "tailwind-merge";
+import clsx from "clsx";
 
 export default function Breadcrumb() {
   const location = useLocation();
@@ -12,7 +14,15 @@ export default function Breadcrumb() {
               {index > 1 && <span className="mx-1"> &gt; </span>}
               <Link
                 to={`/${paths.slice(0, index + 1).join("/")}`}
-                className={`hover:text-black  ${index == paths.length - 1 ? "font-extrabold text-black/100 underline " : null} text-black/50 transition-all duration-200`}
+                className={twMerge(
+                  clsx(
+                    "hover:text-black index == paths.length - 1 text-black/50 transition-all duration-200",
+                    {
+                      "font-extrabold text-black/100 underline":
+                        index == paths.length - 1,
+                    }
+                  )
+                )}
               >
                 {path.toUpperCase()}
               </Link>

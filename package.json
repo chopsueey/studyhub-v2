@@ -12,6 +12,7 @@
     "@google/generative-ai": "^0.21.0",
     "@react-router/node": "^7.1.1",
     "@react-router/serve": "^7.1.1",
+    "clsx": "^2.1.1",
     "dotenv": "^16.4.7",
     "isbot": "^5.1.17",
     "lucide-react": "^0.474.0",
@@ -22,7 +23,8 @@
     "react-markdown": "^9.0.3",
     "react-quilljs": "^2.0.5",
     "react-router": "^7.1.1",
-    "slug": "^10.0.0"
+    "slug": "^10.0.0",
+    "tailwind-merge": "^3.0.2"
   },
   "devDependencies": {
     "@react-router/dev": "^7.1.1",
