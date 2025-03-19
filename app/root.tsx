@@ -41,14 +41,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
             Studyhub
           </NavLink>
           <Breadcrumb />
-          {/* <div>
-            <NavLink className="hover:underline text-blue-500" to={"/"}>
-              Home
-            </NavLink>{" "}
-            <NavLink className="hover:underline text-blue-500" to={"/studies"}>
-              Studies
-            </NavLink>
-          </div> */}
         </header>
         {children}
         <ScrollRestoration />
