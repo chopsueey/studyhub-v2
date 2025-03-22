@@ -1,6 +1,5 @@
 import { findNoteBySlug, patchNote } from "~/backend/functions/note";
 import type { Route } from "./+types/edit-note";
-import QuillEditor from "~/components/QuillEditor";
 import { redirect } from "react-router";
 
 export async function loader({ params }: Route.LoaderArgs) {
@@ -26,7 +25,6 @@ export async function action({ request, params }: Route.ActionArgs) {
 
 export default function EditNote({ loaderData }: Route.ComponentProps) {
   const { note } = loaderData;
-  console.log(QuillEditor)
 
   if (!note) {
     return (
@@ -37,7 +35,7 @@ export default function EditNote({ loaderData }: Route.ComponentProps) {
   }
   return (
     <div className="max-w-screen-md m-auto flex justify-center">
-      <QuillEditor action="edit" note={note} />
+      {/* <QuillEditor action="edit" note={note} /> */}
     </div>
   );
 }
