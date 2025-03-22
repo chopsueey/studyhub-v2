@@ -4,6 +4,7 @@ import QuillEditor from "~/components/QuillEditor";
 import { redirect } from "react-router";
 
 export async function loader({ params }: Route.LoaderArgs) {
+  console.log(process.versions)
   const note = await findNoteBySlug(params.noteSlug);
   note._id = note._id.toString(); // convert to string, because the Mongoose-ObjectId does not exist in JSON (it will create a buffer, we do not want that)
   return { note };
@@ -25,6 +26,7 @@ export async function action({ request, params }: Route.ActionArgs) {
 
 export default function EditNote({ loaderData }: Route.ComponentProps) {
   const { note } = loaderData;
+  console.log(QuillEditor)
 
   if (!note) {
     return (
