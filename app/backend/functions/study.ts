@@ -58,7 +58,7 @@ export async function createStudy(formData: FormData) {
   }
 
   try {
-    const study: IStudy = new Study({
+    const study = new Study({
       name: slug(name),
     });
     await study.save();
