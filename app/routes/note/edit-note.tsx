@@ -1,9 +1,9 @@
 import { findNoteBySlug, patchNote } from "~/backend/functions/note";
 import type { Route } from "./+types/edit-note";
 import { redirect } from "react-router";
+import QuillEditor from "~/components/QuillEditor";
 
 export async function loader({ params }: Route.LoaderArgs) {
-  console.log(process.versions)
   const note = await findNoteBySlug(params.noteSlug);
   note._id = note._id.toString(); // convert to string, because the Mongoose-ObjectId does not exist in JSON (it will create a buffer, we do not want that)
   return { note };
@@ -35,7 +35,7 @@ export default function EditNote({ loaderData }: Route.ComponentProps) {
   }
   return (
     <div className="max-w-screen-md m-auto flex justify-center">
-      {/* <QuillEditor action="edit" note={note} /> */}
+      <QuillEditor action="edit" note={note} />
     </div>
   );
 }
