@@ -2,7 +2,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import type { QuillFormat } from "../models/Note";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
-const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash-lite-preview-06-17" });
+const model = genAI.getGenerativeModel({ model: "gemini-flash-lite-latest"});
 
 export async function promptAI(option: number, noteContent: QuillFormat[]) {
   const content = noteContent.map((item: QuillFormat) => item.insert).join("");
