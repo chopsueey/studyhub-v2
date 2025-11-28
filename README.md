@@ -1,100 +1,39 @@
-# Welcome to React Router!
+## studyhub
 
-A modern, production-ready template for building full-stack React applications using React Router.
+I wanted something to collect all of my notes at one place, as my notes are usually
+scattered across my desktop and other folders. Additionally, I thought it would be cool, if I could
+just pass my note and it's content directly to any AI provider just by clicking a button.
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/remix-run/react-router-templates/tree/main/default)
+I am using the google gemini api with the free gemini flash model to give me a summary
+(or a quiz or whatever you want) to get the key information within just a snap.
 
-## Features
+### Demo
+[![Watch the demo](https://img.youtube.com/vi/kMkPbBJ2p7Q/0.jpg)](https://www.youtube.com/watch?v=kMkPbBJ2p7Q)
 
-- 🚀 Server-side rendering
-- ⚡️ Hot Module Replacement (HMR)
-- 📦 Asset bundling and optimization
-- 🔄 Data loading and mutations
-- 🔒 TypeScript by default
-- 🎉 TailwindCSS for styling
-- 📖 [React Router docs](https://reactrouter.com/)
+### Get started
 
-## Getting Started
+Prereq:
 
-### Installation
+Node installed 
++
+a MongoDB cluster (its free) and
+a gemini api key (also free).
 
-Install the dependencies:
+Clone or download the repo,
 
+Run:
 ```bash
-npm install
+npm install --force
 ```
 
-### Development
+Create a .env.local file in the root and 
+add your MongoDB URI and the gemini api key.
 
-Start the development server with HMR:
-
+Run:
 ```bash
 npm run dev
 ```
-
-Your application will be available at `http://localhost:5173`.
-
-## Building for Production
-
-Create a production build:
-
+or
 ```bash
-npm run build
+npm run build && npm start
 ```
-
-## Deployment
-
-### Docker Deployment
-
-This template includes three Dockerfiles optimized for different package managers:
-
-- `Dockerfile` - for npm
-- `Dockerfile.pnpm` - for pnpm
-- `Dockerfile.bun` - for bun
-
-To build and run using Docker:
-
-```bash
-# For npm
-docker build -t my-app .
-
-# For pnpm
-docker build -f Dockerfile.pnpm -t my-app .
-
-# For bun
-docker build -f Dockerfile.bun -t my-app .
-
-# Run the container
-docker run -p 3000:3000 my-app
-```
-
-The containerized application can be deployed to any platform that supports Docker, including:
-
-- AWS ECS
-- Google Cloud Run
-- Azure Container Apps
-- Digital Ocean App Platform
-- Fly.io
-- Railway
-
-### DIY Deployment
-
-If you're familiar with deploying Node applications, the built-in app server is production-ready.
-
-Make sure to deploy the output of `npm run build`
-
-```
-├── package.json
-├── package-lock.json (or pnpm-lock.yaml, or bun.lockb)
-├── build/
-│   ├── client/    # Static assets
-│   └── server/    # Server-side code
-```
-
-## Styling
-
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever CSS framework you prefer.
-
----
-
-Built with ❤️ using React Router.
